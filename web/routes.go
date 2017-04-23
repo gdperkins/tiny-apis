@@ -14,7 +14,7 @@ func RegisterRoutes(s *Server) {
 		message := ""
 		name := c.Query("name")
 		if name != "" {
-			message = fmt.Sprintf("Hello %s, lets make some APIs.", message)
+			message = fmt.Sprintf("Hello %s, lets make some APIs.", name)
 		} else {
 			message = "Hello guest, lets make some APIs."
 		}
