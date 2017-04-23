@@ -1,6 +1,6 @@
 package main
 
-import "tinyapis/web"
+import "github.com/gdperkins/tiny-apis/web"
 
 func main() {
 
