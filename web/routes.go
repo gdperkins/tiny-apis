@@ -3,12 +3,23 @@ package web
 import (
 	"net/http"
 
+	"fmt"
+
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
 // RegisterRoutes adds all the APIs to be served
 func RegisterRoutes(s *Server) {
 	s.GET("/test", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello %s, lets make some APIs.", c.Query("name"))
+		message := ""
+		name := c.Query("name")
+		if name != "" {
+			message = fmt.Sprintf("Hello %s, lets make some APIs.", message)
+		} else {
+			message = "Hello guest, lets make some APIs."
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"message": message,
+		})
 	})
 }
