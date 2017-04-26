@@ -45,6 +45,7 @@ func ConvertWebColour(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"summary": ColourSummary{
 			RGB: fmt.Sprintf("%s,%s,%s", hex[1:3], hex[3:5], hex[5:7]),
+			HEX: hex,
 		},
 	})
 }
