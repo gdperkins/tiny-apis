@@ -1,6 +1,8 @@
 package main
 
-import "github.com/gdperkins/tiny-apis/web"
+import (
+	"github.com/gdperkins/tiny-apis/web"
+)
 
 func main() {
 

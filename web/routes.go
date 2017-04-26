@@ -3,6 +3,8 @@ package web
 import (
 	"net/http"
 
+	"github.com/gdperkins/tiny-apis/apis"
+
 	"fmt"
 
 	"gopkg.in/gin-gonic/gin.v1"
@@ -22,4 +24,9 @@ func RegisterRoutes(s *Server) {
 			"message": message,
 		})
 	})
+
+	clrs := s.Group("api/v1/colors")
+	{
+		clrs.GET("/convert", apis.ConvertWebColour)
+	}
 }
