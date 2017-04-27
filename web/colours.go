@@ -1,11 +1,14 @@
-package apis
+package web
 
 import (
+	"fmt"
 	"regexp"
+
+	"github.com/gdperkins/tiny-apis/models"
 
 	"net/http"
 
-	"fmt"
+	"strings"
 
 	"gopkg.in/gin-gonic/gin.v1"
 )
@@ -25,33 +28,21 @@ var (
 
 // ConvertWebColour takes a Hex input and converts
 func ConvertWebColour(c *gin.Context) {
-
 	hex := c.Query("code")
 	if hex == "" {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "missing hex code",
-		})
+		c.JSON(http.StatusBadRequest, models.NewError("Invalid request", 1, "Missing hex parameter."))
 		return
 	}
 
 	match, _ := regexp.Match(hexRegEx, []byte(hex))
 	if match == false {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "invalid format",
-		})
+		c.JSON(http.StatusBadRequest, models.NewError("Invalid request", 1, "Invalid hex format."))
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"summary": ColourSummary{
-			RGB: fmt.Sprintf("%s,%s,%s", hex[1:3], hex[3:5], hex[5:7]),
-			HEX: hex,
-		},
+			RGB: strings.ToUpper(fmt.Sprintf("%s,%s,%s", hex[1:3], hex[3:5], hex[5:7])),
+			HEX: hex},
 	})
 }
-
-//$rgb['red'] = hexdec(substr($H,0,2));
-//$rgb['green'] = hexdec(substr($H,2,2));
-//$rgb['blue'] = hexdec(substr($H,4,2));
-//print_r($rgb);
-//return $rgb;
