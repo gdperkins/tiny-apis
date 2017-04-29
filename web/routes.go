@@ -25,6 +25,6 @@ func RegisterRoutes(s *Server) {
 
 	clrs := s.Group("api/v1/colors")
 	{
-		clrs.GET("/convert", ConvertWebColour)
+		clrs.GET("/convert", ConvertColor)
 	}
 }
