@@ -23,6 +23,12 @@ type rgb struct {
 	Value string `json:"value"`
 }
 
+type cmyk struct {
+}
+
+type hsv struct {
+}
+
 var (
 	// the currentRgb for converting to other color formats
 	currentRgb rgb
@@ -63,7 +69,6 @@ func getHex() string {
 }
 
 func getCmyk() (c, m, y, k float32) {
-
 	return 0, 0, 0, 0
 }
 

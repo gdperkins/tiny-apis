@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"github.com/gdperkins/gondle/config"
+	"github.com/gdperkins/tiny-apis/config"
 	"github.com/gdperkins/tiny-apis/web"
 )
 
