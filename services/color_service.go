@@ -9,8 +9,8 @@ import (
 // ColorSummary represents a colour in multiple
 // standard colour code formats
 type ColorSummary struct {
-	RGB  rgb    `json:"rgb"`
 	HEX  string `json:"hex"`
+	RGB  rgb    `json:"rgb"`
 	CMYK cmyk   `json:"cmyk"`
 	HSV  hsv    `json:"hsv"`
 }
