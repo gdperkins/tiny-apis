@@ -36,5 +36,5 @@ func ConvertColor(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, services.GenerateColorSummary(h))
+	c.JSON(http.StatusOK, services.ColorSummaryFromHex(h))
 }
