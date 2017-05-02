@@ -25,18 +25,18 @@ type rgb struct {
 }
 
 type cmyk struct {
-	Cyan    float64
-	Magenta float64
-	Yellow  float64
-	Black   float64
-	Output  string
+	Cyan    float64 `json:"cyan"`
+	Magenta float64 `json:"magenta"`
+	Yellow  float64 `json:"yello"`
+	Black   float64 `json:"black"`
+	Output  string  `json:"output"`
 }
 
 type hsv struct {
-	Hue        string
-	Saturation string
-	Value      string
-	Output     string
+	Hue        string `json:"hue"`
+	Saturation string `json:"saturation"`
+	Value      string `json:"value"`
+	Output     string `json:"output"`
 }
 
 // ColorSummaryFromHex receives a hex input and generates the
