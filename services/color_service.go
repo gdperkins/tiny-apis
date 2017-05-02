@@ -18,25 +18,25 @@ type ColorSummary struct {
 // color is the RGB representation of
 // the value the user colour input
 type rgb struct {
-	Red    int    `json:"red"`
-	Green  int    `json:"green"`
-	Blue   int    `json:"blue"`
+	R      int    `json:"r"`
+	G      int    `json:"g"`
+	B      int    `json:"b"`
 	Output string `json:"output"`
 }
 
 type cmyk struct {
-	Cyan    float64 `json:"cyan"`
-	Magenta float64 `json:"magenta"`
-	Yellow  float64 `json:"yello"`
-	Black   float64 `json:"black"`
-	Output  string  `json:"output"`
+	C      float64 `json:"c"`
+	M      float64 `json:"m"`
+	Y      float64 `json:"y"`
+	K      float64 `json:"k"`
+	Output string  `json:"output"`
 }
 
 type hsv struct {
-	Hue        string `json:"hue"`
-	Saturation string `json:"saturation"`
-	Value      string `json:"value"`
-	Output     string `json:"output"`
+	H      string `json:"h"`
+	S      string `json:"s"`
+	V      string `json:"v"`
+	Output string `json:"output"`
 }
 
 // ColorSummaryFromHex receives a hex input and generates the
@@ -46,10 +46,10 @@ func ColorSummaryFromHex(input string) ColorSummary {
 	fmt.Println(decoded)
 
 	rgb := rgb{
-		Red:   int(decoded[0]),
-		Green: int(decoded[1]),
-		Blue:  int(decoded[2]),
-		Output: fmt.Sprintf("(%d,%d,%d)",
+		int(decoded[0]),
+		int(decoded[1]),
+		int(decoded[2]),
+		fmt.Sprintf("(%d,%d,%d)",
 			int(decoded[0]), int(decoded[1]), int(decoded[2])),
 	}
 
@@ -62,13 +62,13 @@ func ColorSummaryFromHex(input string) ColorSummary {
 }
 
 func cmykFromRgb(rgb *rgb) cmyk {
-	if rgb.Red == 0 && rgb.Green == 0 && rgb.Blue == 0 {
+	if rgb.R == 0 && rgb.G == 0 && rgb.B == 0 {
 		return cmyk{0, 0, 0, 1, "0, 0, 0, 1"}
 	}
 
-	c := float64(1 - (rgb.Red / 255))
-	m := float64(1 - (rgb.Green / 255))
-	y := float64(1 - (rgb.Blue / 255))
+	c := float64(1 - (rgb.R / 255))
+	m := float64(1 - (rgb.G / 255))
+	y := float64(1 - (rgb.B / 255))
 	min := float64(math.Min(c, math.Min(m, y)))
 
 	return cmyk{
