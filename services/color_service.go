@@ -56,7 +56,7 @@ func ColorSummaryFromHex(input string) ColorSummary {
 	return ColorSummary{
 		RGB:  rgb,
 		HEX:  input,
-		CMYK: cmykFromRgb(&rgb),
+		CMYK: cmyk{},
 		HSV:  hsvFromRgb(&rgb),
 	}
 }
@@ -81,5 +81,6 @@ func cmykFromRgb(rgb *rgb) cmyk {
 }
 
 func hsvFromRgb(rgb *rgb) hsv {
+
 	return hsv{}
 }
