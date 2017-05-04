@@ -18,18 +18,18 @@ type ColorSummary struct {
 // color is the RGB representation of
 // the value the user colour input
 type rgb struct {
-	R      int    `json:"r"`
-	G      int    `json:"g"`
-	B      int    `json:"b"`
+	R      uint8  `json:"r"`
+	G      uint8  `json:"g"`
+	B      uint8  `json:"b"`
 	Output string `json:"output"`
 }
 
 type cmyk struct {
-	C      float64 `json:"c"`
-	M      float64 `json:"m"`
-	Y      float64 `json:"y"`
-	K      float64 `json:"k"`
-	Output string  `json:"output"`
+	C      uint8  `json:"c"`
+	M      uint8  `json:"m"`
+	Y      uint8  `json:"y"`
+	K      uint8  `json:"k"`
+	Output string `json:"output"`
 }
 
 type hsv struct {
@@ -42,22 +42,27 @@ type hsv struct {
 // ColorSummaryFromHex receives a hex input and generates the
 // rest of the summary (CMYK, HSV, RGB)
 func ColorSummaryFromHex(input string) ColorSummary {
-	decoded, _ := hex.DecodeString(input[1:len(input)])
-	fmt.Println(decoded)
+	rgb := rgbFromHex(input)
 
-	rgb := rgb{
-		int(decoded[0]),
-		int(decoded[1]),
-		int(decoded[2]),
-		fmt.Sprintf("(%d,%d,%d)",
-			int(decoded[0]), int(decoded[1]), int(decoded[2])),
-	}
+	cmyk := cmykFromRgb(&rgb)
 
 	return ColorSummary{
 		RGB:  rgb,
 		HEX:  input,
-		CMYK: cmyk{},
+		CMYK: cmyk,
 		HSV:  hsvFromRgb(&rgb),
+	}
+}
+
+func rgbFromHex(input string) rgb {
+	decoded, _ := hex.DecodeString(input[1:len(input)])
+
+	return rgb{
+		uint8(decoded[0]),
+		uint8(decoded[1]),
+		uint8(decoded[2]),
+		fmt.Sprintf("(%d,%d,%d)",
+			int(decoded[0]), int(decoded[1]), int(decoded[2])),
 	}
 }
 
@@ -66,21 +71,42 @@ func cmykFromRgb(rgb *rgb) cmyk {
 		return cmyk{0, 0, 0, 1, "0, 0, 0, 1"}
 	}
 
-	c := float64(1 - (rgb.R / 255))
-	m := float64(1 - (rgb.G / 255))
-	y := float64(1 - (rgb.B / 255))
-	min := float64(math.Min(c, math.Min(m, y)))
+	r := 1 - (float64(rgb.R) / float64(255))
+	g := 1 - (float64(rgb.G) / float64(255))
+	b := 1 - (float64(rgb.B) / float64(255))
+	bl := min(r, min(g, b))
 
-	return cmyk{
-		(c - min) / (1 - min),
-		(m - min) / (1 - min),
-		(y - min) / (1 - min),
-		min,
-		fmt.Sprintf("%f, %f, %f, %f", c, m, y, min),
+	c := round((r - bl) / (1 - bl) * 100)
+	m := round((g - bl) / (1 - bl) * 100)
+	y := round((b - bl) / (1 - bl) * 100)
+	k := round(bl * 100)
+
+	return cmyk{c, m, y, k,
+		fmt.Sprintf("(%d, %d, %d, %d)", c, m, y, k),
 	}
 }
 
 func hsvFromRgb(rgb *rgb) hsv {
 
 	return hsv{}
+}
+
+func min(x, y float64) float64 {
+	if x < y {
+		return x
+	}
+	return y
+}
+
+func round(val float64) uint8 {
+	var round float64
+	pow := math.Pow(10, float64(0))
+	digit := pow * val
+	_, div := math.Modf(digit)
+	if div >= 0.5 {
+		round = math.Ceil(digit)
+	} else {
+		round = math.Floor(digit)
+	}
+	return uint8(round / pow)
 }
