@@ -4,6 +4,8 @@ import (
 	"encoding/hex"
 	"fmt"
 	"math"
+	"strconv"
+	"strings"
 )
 
 // ColorSummary represents a colour in multiple
@@ -43,15 +45,44 @@ type hsv struct {
 // rest of the summary (CMYK, HSV, RGB)
 func ColorSummaryFromHex(input string) ColorSummary {
 	rgb := rgbFromHex(input)
-
-	cmyk := cmykFromRgb(&rgb)
-
 	return ColorSummary{
 		RGB:  rgb,
 		HEX:  input,
-		CMYK: cmyk,
+		CMYK: cmykFromRgb(&rgb),
 		HSV:  hsvFromRgb(&rgb),
 	}
+}
+
+// ColorSummaryFromRgb generates CMYK, HSV, HEX from the Rgb input.
+func ColorSummaryFromRgb(input string) ColorSummary {
+	input = strings.TrimLeft(input, "(")
+	input = strings.TrimRight(input, ")")
+
+	rgbs := strings.Split(input, ",")
+	r, _ := strconv.Atoi(rgbs[0])
+	g, _ := strconv.Atoi(rgbs[1])
+	b, _ := strconv.Atoi(rgbs[2])
+
+	color := rgb{
+		R: uint(r),
+		G: uint(g),
+		B: uint(b),
+	}
+
+	return ColorSummary{
+		RGB:  color,
+		HEX:  hexFromRgb(&color),
+		CMYK: cmykFromRgb(&color),
+		HSV:  hsvFromRgb(&color),
+	}
+}
+
+func hexFromRgb(rgb *rgb) string {
+	return fmt.Sprintf("#%v%v%v",
+		strconv.FormatInt(int64(rgb.R), 16),
+		strconv.FormatInt(int64(rgb.G), 16),
+		strconv.FormatInt(int64(rgb.B), 16),
+	)
 }
 
 func rgbFromHex(input string) rgb {
