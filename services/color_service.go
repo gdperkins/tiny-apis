@@ -18,24 +18,24 @@ type ColorSummary struct {
 // color is the RGB representation of
 // the value the user colour input
 type rgb struct {
-	R      uint8  `json:"r"`
-	G      uint8  `json:"g"`
-	B      uint8  `json:"b"`
+	R      uint   `json:"r"`
+	G      uint   `json:"g"`
+	B      uint   `json:"b"`
 	Output string `json:"output"`
 }
 
 type cmyk struct {
-	C      uint8  `json:"c"`
-	M      uint8  `json:"m"`
-	Y      uint8  `json:"y"`
-	K      uint8  `json:"k"`
+	C      uint   `json:"c"`
+	M      uint   `json:"m"`
+	Y      uint   `json:"y"`
+	K      uint   `json:"k"`
 	Output string `json:"output"`
 }
 
 type hsv struct {
-	H      string `json:"h"`
-	S      string `json:"s"`
-	V      string `json:"v"`
+	H      uint   `json:"h"`
+	S      uint   `json:"s"`
+	V      uint   `json:"v"`
 	Output string `json:"output"`
 }
 
@@ -58,9 +58,9 @@ func rgbFromHex(input string) rgb {
 	decoded, _ := hex.DecodeString(input[1:len(input)])
 
 	return rgb{
-		uint8(decoded[0]),
-		uint8(decoded[1]),
-		uint8(decoded[2]),
+		uint(decoded[0]),
+		uint(decoded[1]),
+		uint(decoded[2]),
 		fmt.Sprintf("(%d,%d,%d)",
 			int(decoded[0]), int(decoded[1]), int(decoded[2])),
 	}
@@ -74,7 +74,7 @@ func cmykFromRgb(rgb *rgb) cmyk {
 	r := 1 - (float64(rgb.R) / float64(255))
 	g := 1 - (float64(rgb.G) / float64(255))
 	b := 1 - (float64(rgb.B) / float64(255))
-	bl := min(r, min(g, b))
+	bl := math.Min(r, math.Min(g, b))
 
 	c := round((r - bl) / (1 - bl) * 100)
 	m := round((g - bl) / (1 - bl) * 100)
@@ -87,18 +87,42 @@ func cmykFromRgb(rgb *rgb) cmyk {
 }
 
 func hsvFromRgb(rgb *rgb) hsv {
+	r := (float64(rgb.R) / float64(255))
+	g := (float64(rgb.G) / float64(255))
+	b := (float64(rgb.B) / float64(255))
 
-	return hsv{}
-}
+	min := math.Min(r, math.Min(g, b))
+	v := math.Max(r, math.Max(g, b))
 
-func min(x, y float64) float64 {
-	if x < y {
-		return x
+	s := 0.0
+	delta := v - min
+	if delta != 0.0 {
+		s = delta / v
 	}
-	return y
+
+	h := 0.0
+	if v != min {
+		switch v {
+		case r:
+			h = math.Mod((g-b)/delta, 6.0)
+		case g:
+			h = (b-r)/delta + 2.0
+		case b:
+			h = (r-g)/delta + 4.0
+		}
+		h *= 60
+		if h < 0.0 {
+			h += 360
+		}
+	}
+
+	fh, fs, fv := round(h), round(s*100), round(v*100)
+
+	return hsv{fh, fs, fv,
+		fmt.Sprintf("(%d\u00B0, %d%%, %d%%)", fh, fs, fv)}
 }
 
-func round(val float64) uint8 {
+func round(val float64) uint {
 	var round float64
 	pow := math.Pow(10, float64(0))
 	digit := pow * val
@@ -108,5 +132,5 @@ func round(val float64) uint8 {
 	} else {
 		round = math.Floor(digit)
 	}
-	return uint8(round / pow)
+	return uint(round / pow)
 }
