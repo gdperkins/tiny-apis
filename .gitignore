@@ -21,3 +21,6 @@
 
 debug
 tiny-apis
+
+# OS X
+.DS_STORE

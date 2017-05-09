@@ -1,0 +1,150 @@
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { 
+	
+	
+	
+	
+}
+/*===--End of Media min-resolution: 192dpi--==*/
+
+
+
+@media (min-width:1921px) {
+	
+	body.comingsoon-body {
+		min-height:1480px;	   
+	}
+	
+
+}
+/*===--End of Media min-width:1920px--==*/
+
+
+
+
+@media (max-width:1366px) {
+	
+	body.comingsoon-body {
+		min-height:1024px; 
+	}
+	
+	
+	
+}
+/*===--End of Media max-width-1366px--==*/
+
+
+
+
+@media (max-width:1024px) {
+	
+	body.comingsoon-body {
+		min-height:1366px;	   
+	}
+	
+	
+	
+}
+/*===--End of Media max-width-1024px--==*/
+
+
+
+
+
+@media (max-width:991px) {
+	
+	body.comingsoon-body {
+		min-height:800px; 
+	}
+	
+	
+	
+}
+/*===--End of Media max-width-991px--==*/
+
+
+
+@media (max-width:800px) {
+	
+	body.comingsoon-body {
+		min-height:600px;   
+	}
+		
+		
+		
+}
+/*===--End of Media max-width-800px--==*/
+
+
+
+@media (max-width:768px) {
+	
+	body.comingsoon-body {
+		min-height:1024px;	   
+	}
+		
+		
+		
+}
+/*===--End of Media max-width-767px--==*/
+
+
+@media (max-width:767px) {
+	
+	body.comingsoon-body {
+		min-height:736px;	   
+	}
+		
+		
+		
+}
+/*===--End of Media max-width-767px--==*/
+
+
+
+
+
+
+@media (max-width:420px){
+	
+	
+	
+	
+	
+		
+}
+/*===--End of Media max-width-420px--==*/
+
+
+
+
+
+
+@media (max-width:400px){
+	
+	body.comingsoon-body {
+		min-height:667px; 
+	}
+	
+
+}
+/*===--End of Media max-width-400px--==*/
+
+
+
+
+@media (max-width:340px){
+		
+	body.comingsoon-body {
+		min-height:568px; 
+	}
+	
+	.comingsoon-wraper h1 {
+		font-size: 40px;
+	}
+	
+	
+	
+
+}
+/*===--End of Media max-width-340px--==*/
